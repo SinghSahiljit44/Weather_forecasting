@@ -4,6 +4,10 @@ data/processed/*
 !data/processed/.gitkeep
 models/*
 !models/.gitkeep
+*.keras
+*.h5
+*.pkl
+*.joblib
 
 __pycache__/
 *.py[cod]
