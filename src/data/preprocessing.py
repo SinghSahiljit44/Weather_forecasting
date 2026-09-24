@@ -45,7 +45,6 @@ def _daily_accumulated(df):
 
 # Aggregate to daily. Instantaneous: mean (t2m also min/max). Accumulated: daily total
 def hourly_to_daily(df):
-    """Aggrega a giorno. Istantanee: media (t2m anche min/max). Cumulate: totale giornaliero."""
     df = df.sort_index()
     daily = _daily_instantaneous(df).join(_daily_accumulated(df), how="inner")
     daily = daily.dropna() # last day is dropped, also first day
