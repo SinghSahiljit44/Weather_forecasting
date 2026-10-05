@@ -7,7 +7,6 @@ DATA_DIR = PROJECT_ROOT / "data"
 NETCDF_PATH = DATA_DIR / "raw" / "era5_land_consolidated_italy.nc"
 HOURLY_PATH = DATA_DIR / "interim" / "foggia_hourly.parquet"
 
-# Climatologia fissa in ERA5-Land: si ripete uguale ogni anno, non porta informazione
 DROPPED_VARS = ["lai_hv", "lai_lv"]
 
 

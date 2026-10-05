@@ -2,10 +2,13 @@ from src.data.dataset import load_dataset, select_cell, to_hourly_frame, save_ho
 from src.data.preprocessing import hourly_to_daily, save_daily
 
 ds = load_dataset()
+
 cell = select_cell(ds)
+
 hourly = to_hourly_frame(cell)
 save_hourly(hourly)
 
 daily = hourly_to_daily(hourly)
 save_daily(daily)
 
+print("\n[OK] Pipeline completata: salvati foggia_hourly.parquet e foggia_daily.parquet!")

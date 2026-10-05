@@ -3,21 +3,13 @@ from pathlib import Path
 
 from src.data.dataset import DATA_DIR
 
-DAILY_PATH = DATA_DIR / "processed" / "foggia_daily.csv"
+DAILY_PATH = DATA_DIR / "processed" / "foggia_daily.parquet"
 
-# Variabili istantanee: fotografie orarie, si mediano sulle 24 ore
-INSTANT_VARS = [
-    "t2m",
-    "skt",
-    "stl1",
-    "stl2",
-    "stl3",
-    "stl4",
-    "swvl1",
-    "swvl2",
-    "swvl3",
-    "swvl4",
-]
+TEMP_VARS = ["t2m", "skt", "stl1", "stl2", "stl3", "stl4"]
+
+SOIL_MOIST_VARS = ["swvl1", "swvl2", "swvl3", "swvl4"]
+
+INSTANT_VARS = TEMP_VARS + SOIL_MOIST_VARS
 
 ACCUM_VARS = ["tp", "e", "pev"]
 
@@ -36,14 +28,12 @@ def _daily_instantaneous(df):
     return daily
 
 
-# The value at midnight of day D is the total accumulated in the previous 24 hours
 def _daily_accumulated(df):
     midnight = df.loc[df.index.hour == 0, ACCUM_VARS]
     daily = midnight.set_axis(midnight.index.normalize() - pd.Timedelta(days=1))
     return daily.rename(columns={v: f"{v}_mm" for v in ACCUM_VARS})
 
 
-# Aggregate to daily. Instantaneous: mean (t2m also min/max). Accumulated: daily total
 def hourly_to_daily(df):
     df = df.sort_index()
     daily = _daily_instantaneous(df).join(_daily_accumulated(df), how="inner")
@@ -54,8 +44,8 @@ def hourly_to_daily(df):
 
 def save_daily(df, path=DAILY_PATH):
     Path(path).parent.mkdir(parents=True, exist_ok=True)
-    df.to_csv(path)
+    df.to_parquet(path)
 
 
 def load_daily(path=DAILY_PATH):
-    return pd.read_csv(path, index_col="date", parse_dates=["date"])
+    return pd.read_parquet(path)
