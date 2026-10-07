@@ -1,0 +1,93 @@
+{
+  "rows": 13148,
+  "first_day": "1990-01-01",
+  "last_day": "2025-12-30",
+  "missing_days": 0,
+  "nan_cells": 0,
+  "duplicated_dates": 0,
+  "trend_t2m_per_decade": 0.5227,
+  "trend_t2m_pvalue": 1.02e-08,
+  "trend_t2m_r2": 0.635,
+  "trend_tp_per_decade": 30.4888,
+  "trend_tp_pvalue": 0.037,
+  "trend_tp_r2": 0.125,
+  "t2m_first_decade": 16.0,
+  "t2m_last_decade": 17.38,
+  "tp_annual_mean": 524.6,
+  "tp_annual_min": [
+    2001,
+    380.9
+  ],
+  "tp_annual_max": [
+    2009,
+    747.4
+  ],
+  "t2m_seasonal_amplitude": 20.17,
+  "seasonal_variance_share_t2m": 0.875,
+  "seasonal_variance_share_tp": 0.041,
+  "acf_t2m_raw": {
+    "1": 0.977,
+    "3": 0.928,
+    "7": 0.891,
+    "30": 0.761,
+    "365": 0.855
+  },
+  "acf_t2m_anom": {
+    "1": 0.826,
+    "3": 0.452,
+    "7": 0.211,
+    "30": 0.071,
+    "365": 0.017
+  },
+  "acf_tp_raw": {
+    "1": 0.277,
+    "3": 0.046,
+    "7": 0.041,
+    "30": 0.014,
+    "365": 0.016
+  },
+  "acf_tp_anom": {
+    "1": 0.266,
+    "3": 0.033,
+    "7": 0.025,
+    "30": 0.005,
+    "365": -0.02
+  },
+  "acf_swvl1_anom": {
+    "1": 0.919,
+    "3": 0.709,
+    "7": 0.451,
+    "30": 0.124,
+    "365": -0.037
+  },
+  "t2m_abs_max": [
+    "2017-08-10",
+    43.7
+  ],
+  "t2m_abs_min": [
+    "2017-01-11",
+    -7.5
+  ],
+  "t2m_anom_outliers_z4": 0,
+  "t2m_jump_mean": 1.24,
+  "t2m_jump_max": 8.89,
+  "dry_days_exact_zero_share": 0.065,
+  "dry_days_below_0.1mm_share": 0.524,
+  "rainy_days_share": 0.25,
+  "tp_skewness": 4.94,
+  "tp_quantiles": {
+    "0.5": 0.07,
+    "0.9": 4.26,
+    "0.99": 17.92,
+    "0.999": 32.61
+  },
+  "tp_max": [
+    "2006-09-26",
+    54.8
+  ],
+  "rain_share_from_wettest_1pct": 0.175,
+  "evaporation_positive_days": [
+    2,
+    1
+  ]
+}

@@ -29,6 +29,27 @@ Colonne previste: `date`, `t2m_mean`, `t2m_min`, `t2m_max`, `tp_mm`, `e_mm`, `pe
 Aggregazione: media (e min/max per `t2m`) sulle 24 ore per le variabili istantanee;
 per quelle cumulate vedi la regola qui sotto.
 
+## eda/
+
+Tabelle aggregate per l'analisi esplorativa, generate da `python -m src.eda` a partire da
+`processed/`. Servono al notebook, che si limita a caricarle e disegnare.
+
+| File | Righe | Contenuto |
+|---|---|---|
+| `annual.csv` | 36 | Medie e totali per anno: trend |
+| `monthly_series.csv` | 432 | Serie mensile 1990–2025: grafico d'insieme leggibile |
+| `monthly_climatology.csv` | 12 | Ciclo annuale per mese, con decili |
+| `doy_climatology.csv` | 366 | Climatologia per giorno dell'anno, grezza e lisciata su ±15 giorni |
+| `acf.csv` | 65 | Autocorrelazione, serie grezza e anomalia, lag 0–60 più 91/182/365/730 |
+| `daily_anomalies.csv` | 13.148 | Serie giornaliera con anomalie, salti e media mobile a 365 giorni |
+| `rain_distribution.csv` | 11 | Distribuzione della pioggia per classi, con quota di giorni e di pioggia |
+| `extremes.csv` | 40 | I 10 casi estremi per caldo, freddo, pioggia e salto termico |
+| `summary.json` | 38 voci | Tutti i numeri chiave: trend, varianza stagionale, ACF, outlier, conteggi |
+
+Le anomalie qui sono calcolate sulla climatologia di tutti i 36 anni, perché è analisi
+esplorativa. **Per i modelli la climatologia va ricalcolata sul solo train**, altrimenti è
+leakage.
+
 ## Da ricordare
 
 1. **Variabili cumulate.** `tp`, `e` e `pev` si azzerano alle 01 UTC e crescono durante il
