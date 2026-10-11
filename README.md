@@ -1,0 +1,1 @@
+Data source: Generated using Copernicus Climate Change Service information [2026].
