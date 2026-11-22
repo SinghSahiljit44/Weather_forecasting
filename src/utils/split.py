@@ -5,12 +5,12 @@ class Split:
     VAL_END = 2021    # validation: 2018-2021, test: 2022+
     HORIZON = 30
 
-    def __init__(self, df, horizon=HORIZON):
+    def __init__(self, df, features = [], horizon=HORIZON):
         # daily frequency, so shift(-h) is always h days ahead (missing days become NaN rows)
         self.df = df.sort_index().asfreq("D")
         self.horizon = horizon
         self.horizons = list(range(1, horizon + 1))
-
+        self.features = list(self.df.columns) if features is None else list(features)
         year = pd.Series(self.df.index.year, index=self.df.index)
         self.train = year <= self.TRAIN_END
         self.val = (year > self.TRAIN_END) & (year <= self.VAL_END)
@@ -31,7 +31,10 @@ class Split:
     # (X, Y) for train/val/test: features at t, one target column per lead time.
     # A row is kept only if all horizons exist, so every h is scored on the same days.
     def get(self, features, h=None):
-        X = self.df[features]
+        X = self.df[self.features if features is None else features]
         valid = X.notna().all(axis=1) & self.Y.notna().all(axis=1)
         Y = self.Y if h is None else self.Y[h]
         return tuple((X[m & valid], Y[m & valid]) for m in self.masks())
+
+    def get_features(self):
+        return self.features

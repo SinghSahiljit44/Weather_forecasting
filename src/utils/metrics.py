@@ -7,7 +7,7 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 def get_accuracy(y, y_pred, tolerance=2.0):
     return np.mean(np.abs(np.asarray(y) - np.asarray(y_pred)) <= tolerance)
 
-def get_mean_absolte_error(y, y_pred):
+def get_mean_absolute_error(y, y_pred):
     return mean_absolute_error(y, y_pred)
 
 def get_rmse(y, y_pred):
@@ -16,8 +16,26 @@ def get_rmse(y, y_pred):
 def get_r2_score(y, y_pred):
     return r2_score(y, y_pred)
 
+def plot_rmse(y_true, y_pred, title, unit):
+    pred = pd.DataFrame(y_pred, index=y_true.index, columns=y_true.columns)
+    rmse = pd.Series({h: get_rmse(y_true[h], pred[h]) for h in y_true.columns})
+
+    fig, ax = plt.subplots(figsize=(10, 4.5))
+    ax.plot(rmse.index, rmse.values, color="#2a78d6", linewidth=1.5, marker="o", markersize=4)
+    ax.set_xlabel("Lead time (days)")
+    ax.set_ylabel(f"RMSE ({unit})")
+    ax.set_title(title, loc="left")
+    ax.set_xticks(rmse.index[::2])
+    ax.grid(axis="y", color="#e1e0d9", linewidth=0.8)
+    ax.set_axisbelow(True)
+    for side in ("top", "right"):
+        ax.spines[side].set_visible(False)
+
+    plt.tight_layout()
+    plt.show()
+
 def metrics_table(splits, tolerance=None, leads=None):
-    scores = {"MAE": get_mean_absolte_error, "RMSE": get_rmse, "R²": get_r2_score}
+    scores = {"MAE": get_mean_absolute_error, "RMSE": get_rmse, "R²": get_r2_score}
     if tolerance is not None:
         scores[f"Acc ±{tolerance}"] = lambda y, p: get_accuracy(y, p, tolerance)
 
