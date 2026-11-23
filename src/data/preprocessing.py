@@ -52,30 +52,26 @@ def save_daily(df, path=DAILY_PATH):
 def load_daily(path=DAILY_PATH):
     return pd.read_parquet(path)
 
-def get_split():
+def get_split(t2m_lags=2, tp_lags=2, roll_windows=(7, 30)):
     data = load_daily()
 
     # Seasonality
     doy = data.index.day_of_year
-    data["doy_sin"] = np.sin(2 * np.pi * doy / 365.25) 
+    data["doy_sin"] = np.sin(2 * np.pi * doy / 365.25)
     data["doy_cos"] = np.cos(2 * np.pi * doy / 365.25)
 
-    # Recent past temperature: only values up to day t
-    # Moving averages, takes average of the last 7 days, including t
-    for k in range(1, 3):
-        data[f"t2m_lag{k}"]     = data["t2m_mean"].shift(k)
-        data[f"tp_mm_lag{k}"]   = data["tp_mm"].shift(k)
-    data["t2m_roll7"] = data["t2m_mean"].rolling(7).mean() # recent trend
-    data["t2m_roll30"] = data["t2m_mean"].rolling(30).mean() # background level, how warm is this period of the year
+    # Lags: values of the previous n_lags days
+    for k in range(1, t2m_lags + 1):
+        data[f"t2m_lag{k}"] = data["t2m_mean"].shift(k)
+    for k in range(1, tp_lags + 1):
+        data[f"tp_mm_lag{k}"] = data["tp_mm"].shift(k)
 
-    '''
-    We sure do not love climate change, but we need to acknowledge it!
-    This next feature is fundamental since it lets the model learn about 
-    the warming trend we've been feeling in these 30 years.
-    '''
+    # Moving averages over the last w days, including t
+    for w in roll_windows:
+        data[f"t2m_roll{w}"] = data["t2m_mean"].rolling(w).mean()
+        data[f"tp_log_sum{w}"] = np.log1p(data["tp_mm"].rolling(w).sum())
+
     data["year"] = data.index.year + (data.index.day_of_year - 1) / 365.25  # fractional year
 
-    features = data.columns.array
-
-    split = Split(data, features)
-    return split
+    features = list(data.columns)
+    return Split(data, features)

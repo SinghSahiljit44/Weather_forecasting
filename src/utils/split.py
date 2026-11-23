@@ -5,7 +5,7 @@ class Split:
     VAL_END = 2021    # validation: 2018-2021, test: 2022+
     HORIZON = 30
 
-    def __init__(self, df, features = [], horizon=HORIZON):
+    def __init__(self, df, features = None, horizon=HORIZON):
         # daily frequency, so shift(-h) is always h days ahead (missing days become NaN rows)
         self.df = df.sort_index().asfreq("D")
         self.horizon = horizon
