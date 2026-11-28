@@ -69,7 +69,7 @@ def get_split(t2m_lags=2, tp_lags=2, roll_windows=(7, 30)):
     # Moving averages over the last w days, including t
     for w in roll_windows:
         data[f"t2m_roll{w}"] = data["t2m_mean"].rolling(w).mean()
-        data[f"tp_log_sum{w}"] = np.log1p(data["tp_mm"].rolling(w).sum())
+        data[f"tp_log_sum{w}"] = np.log1p(data["tp_mm"].rolling(w).sum()) # TODO check why log
 
     data["year"] = data.index.year + (data.index.day_of_year - 1) / 365.25  # fractional year
 
