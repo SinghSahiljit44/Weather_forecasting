@@ -75,3 +75,17 @@ def get_split(t2m_lags=2, tp_lags=2, roll_windows=(7, 30)):
 
     features = list(data.columns)
     return Split(data, features)
+
+def get_joint_data(t2m_lags=2, tp_lags=2):
+    split = get_split(t2m_lags=t2m_lags, tp_lags=tp_lags)
+    features = split.get_features()
+
+    split.define_target("t2m_mean")
+    (X_train, yt_train), (X_val, yt_val), (X_test, yt_test) = split.get(features)
+    split.define_target("tp_mm")
+    (_, yp_train), (_, yp_val), (_, yp_test) = split.get(features)
+
+    y_train = pd.concat({"t2m_mean": yt_train, "tp_mm": yp_train}, axis=1)
+    y_val   = pd.concat({"t2m_mean": yt_val,   "tp_mm": yp_val},   axis=1)
+    y_test  = pd.concat({"t2m_mean": yt_test,  "tp_mm": yp_test},  axis=1)
+    return (X_train, y_train), (X_val, y_val), (X_test, y_test)
